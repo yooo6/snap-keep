@@ -1,0 +1,4 @@
+node_modules/
+*.log
+wake-proof.png
+.DS_Store
