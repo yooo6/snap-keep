@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "node index.mjs",
     "wake:human": "node scripts/wake-human.mjs"
   },
   "dependencies": {
