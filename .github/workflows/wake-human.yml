@@ -32,7 +32,7 @@ jobs:
 
       - name: Run browser-only wake flow
         env:
-          TARGET_URL: https://dososda.containers.snapdeploy.dev
+          TARGET_URL: https://dososda.containers.snapdeploy.dev/30242
         run: |
           set -o pipefail
           npm run wake:human 2>&1 | tee wake.log
