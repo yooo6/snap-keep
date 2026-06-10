@@ -3,7 +3,7 @@ name: Wake site with human-like Playwright flow
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '*/14 * * * *'
 
 concurrency:
   group: wake-human-${{ github.ref }}
