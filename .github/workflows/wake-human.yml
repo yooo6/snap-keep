@@ -1,49 +1,32 @@
-name: Wake site with human-like Playwright flow
+name: Renew Server
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/14 * * * *'
 
-concurrency:
-  group: wake-human-${{ github.ref }}
-  cancel-in-progress: false
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
-  wake-human:
+  renew:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 22
 
-      - name: Install npm dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Install Playwright Chromium (with system deps)
-        run: npx playwright install --with-deps chromium
+      - name: Install Chromium
+        run: npx playwright install chromium
 
-      - name: Run browser-only wake flow
+      - name: Run Renew Script
         env:
-          TARGET_URL: https://dososda.containers.snapdeploy.dev/30242
-        run: |
-          set -o pipefail
-          npm run wake:human 2>&1 | tee wake.log
-
-      - name: Upload wake proof artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: wake-human-${{ github.run_id }}-${{ github.run_attempt }}
-          if-no-files-found: warn
-          retention-days: 14
-          path: |
-            wake-proof.png
-            wake.log
+          FMC_EMAIL: ${{ secrets.FMC_EMAIL }}
+          FMC_PASSWORD: ${{ secrets.FMC_PASSWORD }}
+        run: node renew.js
