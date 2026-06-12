@@ -1,0 +1,34 @@
+name: Renew Server
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  renew:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: freemchost
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install chromium
+
+      - name: Run Renew Script
+        env:
+          FMC_EMAIL: ${{ secrets.FMC_EMAIL }}
+          FMC_PASSWORD: ${{ secrets.FMC_PASSWORD }}
+        run: node renew.js
